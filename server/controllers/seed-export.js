@@ -4,7 +4,10 @@ const Joi = require('joi')
 
 const Export = Joi.object({
   models: Joi.array().items(Joi.string()).required().min(1),
-  populate: Joi.boolean().default(false)
+  settings: Joi.object({
+    populate: Joi.boolean().default(false),
+    locale: Joi.boolean().default(true)
+  }).required()
 })
 
 module.exports = {
@@ -19,7 +22,7 @@ module.exports = {
     const [stream, prom] = strapi
       .plugin('strapi-plugin-seed-import-export')
       .service('seedExport')
-      .seedExport(value.models, value.populate)
+      .seedExport(value.models, value.settings)
 
     ctx.body = stream
   },

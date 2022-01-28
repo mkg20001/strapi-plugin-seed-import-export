@@ -77,14 +77,17 @@ const LRes = (url) => {
   return { data, error, isLoading }
 }
 
-async function exportModels (models, populate = false) {
+async function exportModels (models) {
   // TODO: handle non-200 gracefully
   const { data } = await axios({
     method: 'post',
     url: '/strapi-plugin-seed-import-export/export',
     data: {
       models,
-      populate
+      settings: {
+        populate: false,
+        locale: true
+      }
     },
     responseType: 'blob'
   })
@@ -124,16 +127,15 @@ const ExportableList = ({
   exportables,
   onEditExportable,
   onSelectExportable,
-  selectedexportables
+  selectedexportables,
+  exportLocale
 }) => {
   const { formatMessage } = useIntl()
 
   return (
     <KeyboardNavigable tagName="exportable">
       {exportables.map((exportable, index) => {
-        const isSelected = Boolean(
-          selectedexportables.find(currentExportable => currentExportable.id === exportable.id)
-        )
+        const isSelected = selectedexportables[exportable.id]
 
         return (
           <Exportable
@@ -144,6 +146,19 @@ const ExportableList = ({
           />
         )
       })}
+      <BaseCheckbox
+        aria-label={formatMessage({
+          id: getTrad('export.locale'),
+          defaultMessage: 'Include localization settings'
+        })}
+        value={exportLocale}
+        onChange={() => (this.exportLocale = false)}
+      />
+      {formatMessage({
+        id: getTrad('export.locale'),
+        defaultMessage: 'Include localization settings'
+      })}
+
       <Button
         onClick={() => exportModels(selectedexportables)}
       >
@@ -157,13 +172,15 @@ const ExportableList = ({
 }
 
 ExportableList.defaultProps = {
+  exportLocale: true
 }
 
 ExportableList.propTypes = {
   exportables: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
   onEditExportable: PropTypes.func,
   onSelectExportable: PropTypes.func.isRequired,
-  selectedexportables: PropTypes.arrayOf(PropTypes.shape({})).isRequired
+  selectedexportables: PropTypes.shape({}).isRequired,
+  exportLocale: PropTypes.bool,
 }
 
 const HomePage = function () {
@@ -171,7 +188,14 @@ const HomePage = function () {
 
   const res = LRes('/strapi-plugin-seed-import-export/exportables')
 
-  const selectedexportables = []
+  let selectedexportables = {}
+
+  useEffect(() => {
+    if (!res.isLoading && !res.init) {
+      selectedexportables = res.data
+      res.init = true
+    }
+  }, [selectedexportables, res])
 
   return (
     <Layout>
@@ -188,7 +212,7 @@ const HomePage = function () {
           {res.data && <ExportableList
             exportables={res.data}
             selectedexportables={selectedexportables}
-            onSelectExportable={as => (selectedexportables.push(as))}
+            onSelectExportable={as => (selectedexportables[as] = !selectedexportables[as])}
             />}
         </ContentLayout>
       </Main>

@@ -41,8 +41,11 @@ module.exports = ({ strapi }) => {
   })
 
   return {
-    seedExport (models = [], populate = false) {
-      // TODO: if i18n detected then get default locale
+    seedExport (models = [], { populate, locale }) {
+      if (locale) {
+        // TODO: fix export
+        models.push('plugin::i18n.locale')
+      }
 
       const fileNameStore = {}
 
@@ -117,6 +120,7 @@ module.exports = ({ strapi }) => {
           for (const key in ct.attributes) {
             const v = ct.attributes[key]
 
+            // TODO: fix createdAt and updatedAt still present while other keys being ignored when they shouldn't (locale)
             if (v.configurable === false) {
               continue // ignore internal key
             }
@@ -168,7 +172,11 @@ module.exports = ({ strapi }) => {
 
           const seedData = await Promise.all(res.map(async obj => await transformObject(keysToCopy, obj, ct)))
 
-          await addEntry(`seeds/${model}.json`, JSON.stringify(seedData))
+          await addEntry(`seeds/${model}.json`, JSON.stringify({
+            data: seedData,
+            permissions: {}, // TODO: role <-> perm assoc
+            updatedAt: new Date()
+          }))
         }
       })
     },
