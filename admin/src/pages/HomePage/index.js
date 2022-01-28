@@ -22,6 +22,7 @@ import {
   useNotification
 } from '@strapi/helper-plugin'
 
+import { Button } from '@strapi/design-system/Button';
 import { Box } from '@strapi/design-system/Box'
 import { Divider } from '@strapi/design-system/Divider'
 import { Select, Option } from '@strapi/design-system/Select'
@@ -32,6 +33,9 @@ import { Main } from '@strapi/design-system/Main'
 import { useNotifyAT } from '@strapi/design-system/LiveRegions'
 import { KeyboardNavigable } from '@strapi/design-system/KeyboardNavigable';
 import { BaseCheckbox } from '@strapi/design-system/BaseCheckbox';
+
+import FileSaver from 'file-saver';
+import sanitize from 'sanitize-filename'
 
 import axios from '../../utils/axiosInstance'
 import { useQuery } from 'react-query'
@@ -74,7 +78,17 @@ const LRes = (url) => {
 }
 
 async function exportModels(models, populate = false) {
-  
+  const {data}=await axios({
+    method: 'post',
+    url: '/strapi-plugin-seed-import-export/export',
+    body: {
+      models,
+      populate
+    },
+    responseType: 'blob',
+  })
+
+  FileSaver.saveAs(data, sanitize(models.length === 1 ? `${models[0]}.zip` : 'strapi_seed.zip'));
 }
 
 const Exportable = ({
@@ -82,6 +96,8 @@ const Exportable = ({
   isSelected,
   onSelect
 }) => {
+  const { formatMessage } = useIntl()
+
   return (
     <div>
     <BaseCheckbox
@@ -91,6 +107,14 @@ const Exportable = ({
 
       <h1>{exportable.info.displayName}</h1>
       <h2>Export {exportable.kind === 'collectionType' ? `all ${exportable.info.pluralName}` : exportable.info.displayName}</h2>
+      <Button
+        onClick={() => exportModels([exportable.id])}
+      >
+        {formatMessage({
+          id: getTrad('export'),
+          defaultMessage: 'Export',
+        })}
+      </Button>
     </div>
   )
 }
@@ -101,6 +125,8 @@ const ExportableList = ({
   onSelectExportable,
   selectedexportables
 }) => {
+  const { formatMessage } = useIntl()
+
   return (
     <KeyboardNavigable tagName="exportable">
       {exportables.map((exportable, index) => {
@@ -117,6 +143,14 @@ const ExportableList = ({
           />
         )
       })}
+      <Button
+        onClick={() => exportModels(selectedexportables)}
+      >
+        {formatMessage({
+          id: getTrad('export'),
+          defaultMessage: 'Export',
+        })}
+      </Button>
     </KeyboardNavigable>
   )
 }

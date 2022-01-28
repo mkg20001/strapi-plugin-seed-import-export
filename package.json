@@ -13,7 +13,9 @@
     ]
   },
   "dependencies": {
+    "file-saver": "^2.0.5",
     "joi": "^17.6.0",
+    "sanitize-filename": "^1.6.3",
     "zip-stream": "^4.1.0"
   },
   "author": {

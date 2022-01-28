@@ -4,7 +4,7 @@ const Packer = require('zip-stream')
 
 const prom = f => new Promise((resolve, reject) => f((err, res) => err ? reject(err) : resolve(res)))
 
-async function makeArchive (f) {
+function makeArchive (f) {
   const archive = new Packer() // OR new Packer(options)
 
   async function addEntry (file, contents) {
@@ -16,7 +16,7 @@ async function makeArchive (f) {
       cb(err)
     })
 
-    f(addEntry).resolve(() => {
+    f(addEntry).then(() => {
       archive.finish()
       cb()
     }, err => cb(err))
