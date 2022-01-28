@@ -1,1 +1,6 @@
-{}
+{
+  "export": "Exportieren",
+  "export.single": "Einzeln Exportieren",
+  "export.locale": "Lokalisierungseinstellungen miteinschließen",
+  "plugin.name": "Seed Import/Export"
+}
