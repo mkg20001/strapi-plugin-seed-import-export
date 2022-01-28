@@ -7,5 +7,11 @@ module.exports = {
       .service('seedExport')
       .seedExport()
     ctx.body = stream
+  },
+  getExportables (ctx) {
+    ctx.body = strapi
+      .plugin('strapi-plugin-seed-import-export')
+      .service('seedExport')
+      .getExportables()
   }
 }

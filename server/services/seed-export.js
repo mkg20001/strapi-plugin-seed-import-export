@@ -23,22 +23,42 @@ async function makeArchive (f) {
   })]
 }
 
-module.exports = ({ strapi }) => ({
-  seedExport (models = [], populate = false) {
-    return makeArchive(async addEntry => {
-      await addEntry(archive, 'seeds/', null)
-      await addEntry(archive, 'seeds/files/', null)
+module.exports = ({ strapi }) => {
+  const exportables = []
 
-      for (let i = 0; i < models.length; i++) {
-        const model = models[i]
+  Object.values(strapi.contentTypes).forEach(model => {
+    // ignore invisible things
+    if (model.pluginOptions && model.pluginOptions['content-manager'] && model.pluginOptions['content-manager'].visible === false) {
+      return
+    }
 
-        const res = await strapi.db.query(`api::${model}.${model}`).findMany({
-          // only populate if the user wants to
-          populate: populate ? '*' : null
-        })
-
-        await addEntry(`seeds/${model}.json`, JSON.stringify(res))
-      }
+    exportables.push({
+      id: model.uid,
+      info: model.info,
+      kind: model.kind
     })
+  })
+
+  return {
+    seedExport (models = [], populate = false) {
+      return makeArchive(async addEntry => {
+        await addEntry('seeds/', null)
+        await addEntry('seeds/files/', null)
+
+        for (let i = 0; i < models.length; i++) {
+          const model = models[i]
+
+          const res = await strapi.db.query(`${model}`).findMany({
+          // only populate if the user wants to
+            populate: populate ? '*' : null
+          })
+
+          await addEntry(`seeds/${model}.json`, JSON.stringify(res))
+        }
+      })
+    },
+    getExportables () {
+      return exportables // static
+    }
   }
-})
+}
