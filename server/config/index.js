@@ -1,25 +1,23 @@
 'use strict'
 
 const Joi = require('joi')
+const path = require('path')
 
 const Type = Joi.object({
   seedsLocation: Joi.string()
 })
 
-/* module.exports = {
-  default: {}, // TODO: default for seedsLocation
+module.exports = {
+  default: {
+    seedsLocation: path.join(strapi.dirs.root, 'seeds')
+  },
   validator (conf) {
-    const [error, data] = Type.validate(conf)
-    console.log(error, data)
+    const {error, value} = Type.validate(conf)
+
     if (error) {
       throw error
     }
 
-    return data
+    return value
   }
-}
-*/
-module.exports = {
-  default: {},
-  validator () {}
 }
