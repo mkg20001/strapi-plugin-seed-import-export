@@ -1,3 +1,7 @@
 'use strict';
 
-module.exports = {};
+const seed = require('./seed');
+
+module.exports = {
+  seed,
+};

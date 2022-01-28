@@ -1,0 +1,27 @@
+{
+  "kind": "collectionType",
+  "collectionName": "seeds",
+  "info": {
+    "singularName": "seed",
+    "pluralName": "seeds",
+    "displayName": "Seeds"
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "pluginOptions": {
+    "content-manager": {
+      "visible": false
+    },
+    "content-type-builder": {
+      "visible": false
+    }
+  },
+  "attributes": {
+    "model": {
+      "type": "string",
+      "required": true,
+      "unique": true
+    }
+  }
+}

@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "description": "Nice and easy to use plugin to allow exporting/importing seed data and files",
   "strapi": {
-    "name": "strapi-plugin-seed-import-export",
+    "name": "Seed Import/Export",
     "description": "Import and export seed data",
     "kind": "plugin"
   },
