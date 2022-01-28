@@ -13,7 +13,6 @@
     ]
   },
   "dependencies": {
-    "mkgs-tool": "^0.1.23",
     "zip-stream": "^4.1.0"
   },
   "author": {
@@ -39,6 +38,7 @@
     "eslint": "*",
     "eslint-config-ipfs": "*",
     "eslint-config-oclif": "*",
+    "mkgs-tool": "^0.1.23",
     "mocha": "*",
     "nyc": "*"
   }
