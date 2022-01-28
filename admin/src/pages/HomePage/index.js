@@ -104,21 +104,29 @@ const Exportable = ({
 
   return (
     <div>
-    <BaseCheckbox
-      value={isSelected}
-      onChange={() => onSelect(exportable.id)}
-    />
-
-      <h1>{exportable.info.displayName}</h1>
-      <h2>Export {exportable.kind === 'collectionType' ? `all ${exportable.info.pluralName}` : exportable.info.displayName}</h2>
-      <Button
-        onClick={() => exportModels([exportable.id])}
-      >
-        {formatMessage({
-          id: getTrad('export'),
-          defaultMessage: 'Export'
-        })}
-      </Button>
+      <div style={{ display: "flex", flexDirection: "row", maxWidth: "min(100vw, 512px)", minWidth: "min(100vw, 512px)" }}>
+        <div style={{ margin: ".314em" }}>
+          <BaseCheckbox
+            value={isSelected}
+            onChange={() => onSelect(exportable.id)}
+          />
+        </div>
+        <div style={{ margin: ".314em" }}>
+          <span>{exportable.info.displayName} ({exportable.id})</span>
+          <br/>
+          <span>Export {exportable.kind === 'collectionType' ? `all ${exportable.info.pluralName}` : exportable.info.displayName}</span>
+        </div>
+        <div style={{ margin: ".314em", marginLeft: "auto", alignSelf: "flex-end" }}>
+          <Button
+            onClick={() => exportModels([exportable.id])}
+          >
+            {formatMessage({
+              id: getTrad('export.single'),
+              defaultMessage: 'Export Single'
+            })}
+          </Button>
+        </div>
+      </div>
     </div>
   )
 }
