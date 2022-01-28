@@ -1,0 +1,24 @@
+{
+  "name": "strapi-plugin-seed-import-export",
+  "version": "0.0.0",
+  "description": "Nice and easy to use plugin to allow exporting/importing seed data and files",
+  "strapi": {
+    "name": "strapi-plugin-seed-import-export",
+    "description": "Import and export seed data",
+    "kind": "plugin"
+  },
+  "dependencies": {},
+  "author": {
+    "name": "Maciej Krüger <mkg20001@gmail.com>"
+  },
+  "maintainers": [
+    {
+      "name": "Maciej Krüger <mkg20001@gmail.com>"
+    }
+  ],
+  "engines": {
+    "node": ">=12.x. <=16.x.x",
+    "npm": ">=6.0.0"
+  },
+  "license": "MPL-2.0"
+}
