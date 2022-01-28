@@ -13,6 +13,7 @@
     ]
   },
   "dependencies": {
+    "joi": "^17.6.0",
     "zip-stream": "^4.1.0"
   },
   "author": {

@@ -1,10 +1,10 @@
 module.exports = [
   {
-    method: 'GET',
-    path: '/',
-    handler: 'seedExport.index',
+    method: 'POST',
+    path: '/export',
+    handler: 'seedExport.export',
     config: {
-      policies: [],
-    },
-  },
-];
+      policies: []
+    }
+  }
+]

@@ -1,7 +1,7 @@
-'use strict';
+'use strict'
 
-const seed = require('./seed');
+const seed = require('./seed')
 
 module.exports = {
-  seed,
-};
+  seed
+}
