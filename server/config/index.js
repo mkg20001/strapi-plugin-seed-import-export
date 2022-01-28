@@ -12,7 +12,7 @@ module.exports = {
     seedsLocation: path.join(strapi.dirs.root, 'seeds')
   },
   validator (conf) {
-    const {error, value} = Type.validate(conf)
+    const { error, value } = Type.validate(conf)
 
     if (error) {
       throw error

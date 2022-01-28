@@ -104,19 +104,19 @@ const Exportable = ({
 
   return (
     <div>
-      <div style={{ display: "flex", flexDirection: "row", maxWidth: "min(100vw, 512px)", minWidth: "min(100vw, 512px)" }}>
-        <div style={{ margin: ".314em" }}>
+      <div style={{ display: 'flex', flexDirection: 'row', maxWidth: 'min(100vw, 512px)', minWidth: 'min(100vw, 512px)' }}>
+        <div style={{ margin: '.314em' }}>
           <BaseCheckbox
             value={isSelected}
             onChange={() => onSelect(exportable.id)}
           />
         </div>
-        <div style={{ margin: ".314em" }}>
+        <div style={{ margin: '.314em' }}>
           <span>{exportable.info.displayName} ({exportable.id})</span>
           <br/>
           <span>Export {exportable.kind === 'collectionType' ? `all ${exportable.info.pluralName}` : exportable.info.displayName}</span>
         </div>
-        <div style={{ margin: ".314em", marginLeft: "auto", alignSelf: "flex-end" }}>
+        <div style={{ margin: '.314em', marginLeft: 'auto', alignSelf: 'flex-end' }}>
           <Button
             onClick={() => exportModels([exportable.id])}
           >
@@ -188,7 +188,7 @@ ExportableList.propTypes = {
   onEditExportable: PropTypes.func,
   onSelectExportable: PropTypes.func.isRequired,
   selectedexportables: PropTypes.shape({}).isRequired,
-  exportLocale: PropTypes.bool,
+  exportLocale: PropTypes.bool
 }
 
 const HomePage = function () {

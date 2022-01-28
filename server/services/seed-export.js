@@ -166,11 +166,36 @@ module.exports = ({ strapi }) => {
             return out
           }
 
-          const res = await strapi.entityService.findMany(`${model}`, {
-            populate
-          })
+          let seedData
 
-          const seedData = await Promise.all(res.map(async obj => await transformObject(keysToCopy, obj, ct)))
+          switch (ct.kind) {
+            case 'collectionType': {
+              let res = await strapi.entityService.findMany(model, {
+                populate
+              })
+
+              if (!res) {
+                res = []
+              } else if (!Array.isArray(res)) {
+                res = [res]
+              }
+
+              seedData = await Promise.all(res.map(async obj => await transformObject(keysToCopy, obj, ct)))
+              break
+            }
+            case 'singleType': {
+              const res = await strapi.entityService.findOne(model, {
+                // populate
+              })
+
+              seedData = res ? await transformObject(keysToCopy, res, ct) : null
+
+              break
+            }
+            default: {
+              throw new TypeError(ct.kind)
+            }
+          }
 
           await addEntry(`seeds/${model}.json`, JSON.stringify({
             data: seedData,
