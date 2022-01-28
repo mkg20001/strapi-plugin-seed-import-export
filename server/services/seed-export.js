@@ -42,9 +42,6 @@ module.exports = ({ strapi }) => {
   return {
     seedExport (models = [], populate = false) {
       return makeArchive(async addEntry => {
-        await addEntry('seeds/', null)
-        await addEntry('seeds/files/', null)
-
         for (let i = 0; i < models.length; i++) {
           const model = models[i]
 

@@ -9,7 +9,7 @@ import React, { memo, useEffect } from 'react'
 import pluginId from '../../pluginId'
 import getTrad from '../../utils/getTrad'
 import { useIntl } from 'react-intl'
-import PropTypes from 'prop-types';
+import PropTypes from 'prop-types'
 
 import {
   LoadingIndicatorPage,
@@ -22,7 +22,7 @@ import {
   useNotification
 } from '@strapi/helper-plugin'
 
-import { Button } from '@strapi/design-system/Button';
+import { Button } from '@strapi/design-system/Button'
 import { Box } from '@strapi/design-system/Box'
 import { Divider } from '@strapi/design-system/Divider'
 import { Select, Option } from '@strapi/design-system/Select'
@@ -31,10 +31,10 @@ import { Stack } from '@strapi/design-system/Stack'
 import { Layout, HeaderLayout, ContentLayout, ActionLayout } from '@strapi/design-system/Layout'
 import { Main } from '@strapi/design-system/Main'
 import { useNotifyAT } from '@strapi/design-system/LiveRegions'
-import { KeyboardNavigable } from '@strapi/design-system/KeyboardNavigable';
-import { BaseCheckbox } from '@strapi/design-system/BaseCheckbox';
+import { KeyboardNavigable } from '@strapi/design-system/KeyboardNavigable'
+import { BaseCheckbox } from '@strapi/design-system/BaseCheckbox'
 
-import FileSaver from 'file-saver';
+import FileSaver from 'file-saver'
 import sanitize from 'sanitize-filename'
 
 import axios from '../../utils/axiosInstance'
@@ -77,18 +77,19 @@ const LRes = (url) => {
   return { data, error, isLoading }
 }
 
-async function exportModels(models, populate = false) {
-  const {data}=await axios({
+async function exportModels (models, populate = false) {
+  // TODO: handle non-200 gracefully
+  const { data } = await axios({
     method: 'post',
     url: '/strapi-plugin-seed-import-export/export',
-    body: {
+    data: {
       models,
       populate
     },
-    responseType: 'blob',
+    responseType: 'blob'
   })
 
-  FileSaver.saveAs(data, sanitize(models.length === 1 ? `${models[0]}.zip` : 'strapi_seed.zip'));
+  FileSaver.saveAs(data, sanitize(models.length === 1 ? `${models[0]}.zip` : 'strapi_seed.zip'))
 }
 
 const Exportable = ({
@@ -112,7 +113,7 @@ const Exportable = ({
       >
         {formatMessage({
           id: getTrad('export'),
-          defaultMessage: 'Export',
+          defaultMessage: 'Export'
         })}
       </Button>
     </div>
@@ -148,7 +149,7 @@ const ExportableList = ({
       >
         {formatMessage({
           id: getTrad('export'),
-          defaultMessage: 'Export',
+          defaultMessage: 'Export'
         })}
       </Button>
     </KeyboardNavigable>
