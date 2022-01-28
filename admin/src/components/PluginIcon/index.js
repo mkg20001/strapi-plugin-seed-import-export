@@ -5,8 +5,8 @@
  */
 
 import React from 'react'
-import Database from '@strapi/icons/Database'
+import Application from '@strapi/icons/Application'
 
-const PluginIcon = () => <Database />
+const PluginIcon = () => <Application />
 
 export default PluginIcon
