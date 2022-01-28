@@ -7,7 +7,15 @@
     "description": "Import and export seed data",
     "kind": "plugin"
   },
-  "dependencies": {},
+  "template": {
+    "extends": [
+      "nodeEslint"
+    ]
+  },
+  "dependencies": {
+    "mkgs-tool": "^0.1.23",
+    "zip-stream": "^4.1.0"
+  },
   "author": {
     "name": "Maciej Krüger <mkg20001@gmail.com>"
   },
@@ -20,5 +28,18 @@
     "node": ">=12.x. <=16.x.x",
     "npm": ">=6.0.0"
   },
-  "license": "MPL-2.0"
+  "license": "MPL-2.0",
+  "scripts": {
+    "test": "mocha -A",
+    "cov": "nyc mocha",
+    "lint": "eslint .",
+    "fix": "eslint --fix ."
+  },
+  "devDependencies": {
+    "eslint": "*",
+    "eslint-config-ipfs": "*",
+    "eslint-config-oclif": "*",
+    "mocha": "*",
+    "nyc": "*"
+  }
 }

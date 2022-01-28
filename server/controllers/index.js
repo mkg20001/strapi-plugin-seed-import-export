@@ -1,7 +1,7 @@
 'use strict';
 
-const myController = require('./my-controller');
+const seedExport = require('./seed-export');
 
 module.exports = {
-  myController,
+  seedExport,
 };
