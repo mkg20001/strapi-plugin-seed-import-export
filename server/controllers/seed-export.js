@@ -9,7 +9,7 @@ const Export = Joi.object({
 
 module.exports = {
   export (ctx) {
-    const {error, value} = Export.validate(JSON.parse(JSON.stringify(ctx.request.body)))
+    const { error, value } = Export.validate(JSON.parse(JSON.stringify(ctx.request.body)))
 
     if (error) {
       ctx.body = error
