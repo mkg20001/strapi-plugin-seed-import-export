@@ -73,6 +73,12 @@ async function createEntry ({ model, entry, files }) {
   try {
     // TODO: l10n
 
+    const published = entry.$_published
+
+    if (published != null) {
+      // TODO: published status
+    }
+
     if (files) {
       for (const [key, file] of Object.entries(files)) {
         // Get file name without the extension
@@ -105,12 +111,14 @@ async function createEntry ({ model, entry, files }) {
       }
     )
   } catch (e) {
+    // TODO: revert other additions
     console.log('model', entry, e)
+    throw e
   }
 }
 
 function filterFiles (lvl, root, stack, files) {
-  if (lvl._file !== null) {
+  if (lvl._file != null) {
     let meta
     let fileName
 
@@ -183,19 +191,29 @@ const ModelType = Joi.object({
   data: Joi.any(),
   permissions: Joi.object(),
   updatedAt: Joi.date().required()
-})
+}).required()
 
 async function processSeed (g, { model, json }) {
   strapi.log.info(`[seed-import-export] Processing ${model}`)
 
-  const { values, error } = ModelType.validate(JSON.parse(fs.readFileSync(json)))
+  let parsed
+
+  try {
+    parsed = JSON.parse(fs.readFileSync(json))
+  } catch(error) {
+    console.error(error)
+    return strapi.log.error(`[seed-import-export] ${json} is formatted wrongly`)
+  }
+
+  const { value, error } = ModelType.validate(parsed)
   const {
     data,
     permissions,
     updatedAt
-  } = values
+  } = value
 
   if (error) {
+    console.error(error)
     return strapi.log.error(`[seed-import-export] ${json} is formatted wrongly`)
   }
 
@@ -205,7 +223,7 @@ async function processSeed (g, { model, json }) {
     return error(`Content-Type ${model} not found in strapi - these seeds dont seem to belong`)
   }
 
-  let entry = strapi.findOne('seed', {
+  let entry = strapi.entityService.findOne('plugin::strapi-plugin-seed-import-export.seed', {
     model
   })
 
@@ -254,14 +272,18 @@ module.exports = async () => {
 
   const g = { loc, filesLoc }
 
-  fs.readdirSync(loc).forEach(thing => {
+  const things = fs.readdirSync(loc)
+
+  for (let i = 0; i < things.length; i++) {
+    const thing = things[i]
+
     const json = path.join(loc, thing)
     const stat = fs.lstatSync(json)
 
     if (stat.isFile() && thing.endsWith('.json')) {
       const model = thing.replace(/\.json$/, '')
 
-      processSeed(g, { model, json })
+      await processSeed(g, { model, json })
     }
-  })
+  }
 }
