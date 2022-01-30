@@ -50,24 +50,25 @@ module.exports = ({ strapi }) => {
       const fileNameStore = {}
 
       async function sendOffFile (addEntry, file) {
-        let name = file.name
+        let fsName = file.name
 
-        if (!name.endsWith(file.ext)) {
-          name += file.ext
+        if (!fsName.endsWith(file.ext)) {
+          fsName += file.ext
         }
 
-        name = sanitize(name)
+        fsName = sanitize(fsName)
 
-        while (fileNameStore[name]) {
+        while (fileNameStore[fsName]) {
           fileNameStore.replace(/(\.[a-z]+)$/, (_, type) => '-' + type)
         }
 
-        fileNameStore[name] = true
+        fileNameStore[fsName] = true
 
         // await addEntry('seeds/files/' + name, getFile(file))
 
         return {
-          name,
+          fsName,
+          name: file.name,
           alternativeText: file.alternativeText,
           caption: file.caption
         }
